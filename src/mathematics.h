@@ -10,31 +10,109 @@ using namespace std;
 
 
 // Thomas Algorithm (Trigonal matrix inversion O(N))
-vector<double> TDMA(vector<double> a, vector<double> b, vector<double> c, vector<double> d)
-    {
-        int n = d.size();
-        vector<double> w(n-1, 0);
-        vector<double> g(n, 0);
-        vector<double> p(n, 0);
+//vector<double> TDMA(vector<double> a, vector<double> b, vector<double> c, vector<double> d)
+//    {
+//        int n = d.size();
+//        vector<double> w(n-1, 0);
+//        vector<double> g(n, 0);
+//        vector<double> p(n, 0);
+//
+//        w[0] = c[0]/b[0];
+//        g[0] = d[0]/b[0];
+//
+//        for (int i = 1; i < n-1; i++)
+//            {
+//                w[i] = c[i]/(b[i] - a[i-1]*w[i-1]);
+//            }
+//        for (int i = 1; i < n; i++)
+//            {
+//                g[i] = (d[i] - a[i-1]*g[i-1])/(b[i] - a[i-1]*w[i-1]);
+//            }
+//        p[n-1] = g[n-1]; 
+//        for (int i = n-1; i > 0; i--)
+//            {
+//                p[i-1] = g[i-1] - w[i-1]*p[i]; 
+//            }
+//        return p;
 
-        w[0] = c[0]/b[0];
-        g[0] = d[0]/b[0];
+//    }
+
+/* 
+For the boundary conditions, vectors a, b, c, d need to be of the same size
+*/
+
+// Thomas Algorithm for a pertubed matrix(Boundary conditions)
+vector<double> TDMA(vector<double> a, vector<double> b, vector<double> c , vector<double> d)
+    {
+        /*-------Constructing a true tri-diagonal matrix A' from the pertubed tri-diagonal matrix-------*/
+
+        int n = d.size();
+        vector<double> x(n, 0);           // x contains the global solutions we want to return
+        // Vectors used to construct the tri-diagonal matrix
+        vector<double> u(n, 0);
+        vector<double> v(n, 0);
+        // New matrix
+        vector<double> A = a;
+        vector<double> B = b;
+        vector<double> C = c;
+
+        u[0] = -b[0];
+        u[n-1] = c[n-1];
+        v[0] = 1;
+        v[n-1] = -(a[0] / b[0]);
+        B[n-1] += A[0] * C[0] / B[0];
+        B[0] *= 2;
+
+        /*-------Thomas algorithm for two equation-------*/
+
+        vector<double> y(n, 0);           // Solutions of the equation A'y = d
+        vector<double> q(n, 0);           // Solutions of the equation A'q = u
+        vector<double> w1(n-1, 0);
+        vector<double> g1(n, 0);
+        vector<double> w2(n-1, 0);
+        vector<double> g2(n, 0);
+        
+        w1[0] = c[0] / b[0];
+        w2[0] = c[0] / b[0];
+        g1[0] = d[0] / b[0];
+        g2[0] = u[0] / b[0];
 
         for (int i = 1; i < n-1; i++)
             {
-                w[i] = c[i]/(b[i] - a[i-1]*w[i-1]);
+                w1[i] = C[i] / (B[i] - A[i-1] * w1[i-1]);
+                w2[i] = C[i] / (B[i] - A[i-1] * w2[i-1]);
             }
         for (int i = 1; i < n; i++)
             {
-                g[i] = (d[i] - a[i-1]*g[i-1])/(b[i] - a[i-1]*w[i-1]);
+                g1[i] = (d[i] - A[i-1] * g1[i-1]) / (B[i] - A[i-1] * w1[i-1]);
+                g2[i] = (u[i] - A[i-1] * g2[i-1]) / (B[i] - A[i-1] * w2[i-1]);
             }
-        p[n-1] = g[n-1]; 
+        y[n-1] = g1[n-1];
+        q[n-1] = g2[n-1];
         for (int i = n-1; i > 0; i--)
             {
-                p[i-1] = g[i-1] - w[i-1]*p[i]; 
+                y[i-1] = g1[i-1] - w1[i-1] * y[i];
+                q[i-1] = g2[i-1] - w2[i-1] * q[i]; 
             }
-        return p;
 
+        /*-------Computing new solutions x-------*/
+
+        // Computing scalar product
+        double vy;
+        double vq;
+        for (int i = 0; i > n-1; i++)
+            {
+                vy += v[i] * y[i];
+                vq += v[i] * q[i];
+            }
+
+        double H = vy / (1 + vq);
+
+        for (int i = 0; i > n-1; i++)
+            {
+                x[i] = y[i] - H * q[i];
+            }
+        return x;
     }
 
 

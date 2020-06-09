@@ -42,8 +42,8 @@ def getDamping(E, phase) :
 #      OUTPUT FOLDER CREATOR                                                  #
 ###############################################################################
 # Relative position of the ouput folder
-folder_name = "Test_standard_full"
-folder_path = "../WorkFolder/" # The path containing the folder
+folder_name = "CNM_DiM_CNM_DiM_CNM_WNM_CNM_0_2000_1200"
+folder_path = "/home/arthur/Documents/WorkFolder/CR_spectra/" # The path containing the folder
 
 total_path = folder_path+folder_name
 
@@ -73,7 +73,7 @@ Emin      = 0.99*cst.GeV
 Emax      = 50.01*cst.TeV
 egridtype = "logspace" # Type of grid - # logspace type recomended (only option for the moment)
 
-box_center = 1000.*cst.pc  # Position of the center of the CR source 
+box_center = 1200.*cst.pc  # Position of the center of the CR source 
 
 # Phase space 
 X = grid.grid(Xmin, Xmax, 2**NX, xgridtype, s_center = box_center)
@@ -98,8 +98,8 @@ phases  = [] # Phases list
 # Append phases in the order of the setup you want to create
 
 # Example : One phase setup
-phases.append([ism.WNM, dict(Xmin=0.*cst.pc,    Xmax=2000.*cst.pc),
-               getVA(E, ism.WNM), getDamping(E, ism.WNM)[0], getDamping(E, ism.WNM)[1]]) 
+# phases.append([ism.WNM, dict(Xmin=0.*cst.pc,    Xmax=2000.*cst.pc),
+#                getVA(E, ism.WNM), getDamping(E, ism.WNM)[0], getDamping(E, ism.WNM)[1]]) 
 
 # Example, multiphase setup : WNM-CNM-DiM-CNM-WNM-CNM-DiM-CNM-WNM 
 # phases.append([ism.WNM, dict(Xmin = 0.*cst.pc, Xmax = 870.*cst.pc), 
@@ -120,6 +120,24 @@ phases.append([ism.WNM, dict(Xmin=0.*cst.pc,    Xmax=2000.*cst.pc),
 #                 getVA(E, ism.CNM), getDamping(E, ism.CNM)[0], getDamping(E, ism.CNM)[1]])
 # phases.append([ism.WNM, dict(Xmin = 1130.*cst.pc, Xmax = 2000.*cst.pc), 
 #                 getVA(E, ism.WNM), getDamping(E, ism.WNM)[0], getDamping(E, ism.WNM)[1]])
+
+# Phases used
+
+phases.append([ism.CNM, dict(Xmin = 0.*cst.pc, Xmax = 400.*cst.pc), 
+               getVA(E, ism.CNM), getDamping(E, ism.CNM)[0], getDamping(E, ism.CNM)[1]])
+phases.append([ism.DiM, dict(Xmin = 400.*cst.pc, Xmax = 440.*cst.pc), 
+               getVA(E, ism.DiM), getDamping(E, ism.DiM)[0], getDamping(E, ism.DiM)[1]])
+phases.append([ism.CNM, dict(Xmin = 440.*cst.pc, Xmax = 700.*cst.pc), 
+               getVA(E, ism.CNM), getDamping(E, ism.CNM)[0], getDamping(E, ism.CNM)[1]])
+phases.append([ism.DiM, dict(Xmin = 700.*cst.pc, Xmax = 720.*cst.pc), 
+               getVA(E, ism.DiM), getDamping(E, ism.DiM)[0], getDamping(E, ism.DiM)[1]])
+phases.append([ism.CNM, dict(Xmin = 720.*cst.pc, Xmax = 800.*cst.pc), 
+               getVA(E, ism.CNM), getDamping(E, ism.CNM)[0], getDamping(E, ism.CNM)[1]])
+phases.append([ism.WNM, dict(Xmin = 800.*cst.pc, Xmax = 1500.*cst.pc), 
+               getVA(E, ism.WNM), getDamping(E, ism.WNM)[0], getDamping(E, ism.WNM)[1]])
+phases.append([ism.CNM, dict(Xmin = 1500.*cst.pc, Xmax = 2000.*cst.pc), 
+               getVA(E, ism.CNM), getDamping(E, ism.CNM)[0], getDamping(E, ism.CNM)[1]])
+
 smooth_width_transition = [10.*cst.pc, 3.*cst.pc, 3.*cst.pc, 10.*cst.pc, 10.*cst.pc, 3.*cst.pc, 3.*cst.pc, 10.*cst.pc]
 
 # We calculate the smoothed variables
