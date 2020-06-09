@@ -167,7 +167,7 @@ fw.write1D(  "DBohm.dat", nx=nx, ne=ne, variable=Db.T, path=nml.total_path+"/dat
 fw.write1D(     "Ip.dat", nx=nx, ne=ne,  variable=Ip.T, path=nml.total_path+"/data_ini/")   
 fw.write1D(     "Im.dat", nx=nx, ne=ne,  variable=Im.T, path=nml.total_path+"/data_ini/")  
 fw.write1D(    "Pcr.dat", nx=nx, ne=ne,variable=Pcr.T, path=nml.total_path+"/data_ini/")    
-fw.write1D(    "Pe.dat", nx=nx, ne=ne,variable=Pe.T, path=nml.total_path+"/data_ini/")   
+fw.write1D(     "Pe.dat", nx=nx, ne=ne,variable=Pe.T, path=nml.total_path+"/data_ini/")   
 fw.write1D("damping.dat", nx=nx, ne=ne, variable=gamma_tot.T, path=nml.total_path+"/data_ini/")  
 fw.write1Daxis("X.dat", variable=X, nx=nx, path=nml.total_path+"/data_ini/")
 fw.write1Daxis("E.dat", variable=E, nx=ne, path=nml.total_path+"/data_ini/")

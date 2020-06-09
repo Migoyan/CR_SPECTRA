@@ -73,7 +73,7 @@ Emin      = 0.99*cst.GeV
 Emax      = 50.01*cst.TeV
 egridtype = "logspace" # Type of grid - # logspace type recomended (only option for the moment)
 
-box_center = 1200.*cst.pc  # Position of the center of the CR source 
+box_center = 1000.*cst.pc  # Position of the center of the CR source 
 
 # Phase space 
 X = grid.grid(Xmin, Xmax, 2**NX, xgridtype, s_center = box_center)
